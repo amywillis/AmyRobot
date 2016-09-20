@@ -1,39 +1,48 @@
 import RPi.GPIO as GPIO
 import time
-import initio
-import lcd
 import servo
+import datetime
+import speak
 
+from grovepi import *
+from grove_rgb_lcd import *
+  
 try:
-	initio.init()
-	lcd.lcd_init()	
-	servo.servo_init()
-	lcd.lcd_clear()
-	while initio.run():	
-		servo.servo_forward()
-		dist = int(initio.getDistance())
-		msg = "Distance = " + str(dist)		
-		lcd.lcd_line2(msg,2)	
-		if dist < 8 : 
-			initio.forward(5)
-			lcd.lcd_line2("Eeeeek!",2)
-			servo.servo_backward()
-			time.sleep(1)
-			servo.servo_right()
-			time.sleep(1)
-			servo.servo_stop()
-		else :
-		    initio.forward(100)
-			 
-		time.sleep(0.01)
+        ultrasonic_ranger = 7
+        servo.servo_init()
+        setRGB(255,138,150)
+        setText("    ")
+
+        previous_time = datetime.datetime.now()        
+        while True:
+                servo.servo_forward()
+                dist = ultrasonicRead(ultrasonic_ranger)
+                
+                if datetime.datetime.now() > ( previous_time + datetime.timedelta(seconds = 15 )):
+                        setRGB(255,100,100)
+                        setText(" Amy and Chloe   are unicorns!")
+                        speak.say("Amy and Chloe are unicorns!")
+                        setRGB(255,138,150)
+                        previous_time = datetime.datetime.now() 
+                else :                        
+                        msg = " Distance = " + str(dist)
+                        setText(msg)                        
+                        
+                if dist < 8 :                        
+                        setText(" Eeeeek!")
+                        speak.say("Eeeeeeeek!")                        
+                        servo.servo_backward()
+                        time.sleep(1)
+                        servo.servo_right()
+                        time.sleep(1)
+                        servo.servo_stop()
+
+                time.sleep(0.01)
 
 except KeyboardInterrupt:
     print
     pass
 
-finally:	
-	servo.servo_cleanup()
-	lcd.lcd_clear()
-	lcd.lcd_line1("Goodbye!",2)
-	lcd.lcd_cleanup()   
-	initio.cleanup()
+finally:        
+        servo.servo_cleanup()
+        setText(" Goodbye")        

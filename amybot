@@ -1,2 +1,2 @@
 sudo /usr/bin/python /home/pi/git/AmyRobot/AmyRobot.py
-sudo halt
+#sudo halt

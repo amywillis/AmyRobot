@@ -21,6 +21,23 @@ def servo_backward():
 	cmd1 = "echo 1=200 > /dev/servoblaster"
 	os.system(cmd0)
 	os.system(cmd1)
+
+def servo_right_forward():		
+	cmd0 = "echo 0=-200 > /dev/servoblaster"	
+	os.system(cmd0)
+
+def servo_left_forward():		
+	cmd1 = "echo 1=200 > /dev/servoblaster"	
+	os.system(cmd1)
+
+def servo_right_backward():		
+	cmd0 = "echo 0=200 > /dev/servoblaster"	
+	os.system(cmd0)
+
+def servo_left_backward():		
+	cmd1 = "echo 1=-200 > /dev/servoblaster"	
+	os.system(cmd1)	
+	
 	
 def servo_right():		
 	cmd0 = "echo 0=200 > /dev/servoblaster"
